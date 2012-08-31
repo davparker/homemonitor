@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<dashboard>
+  <label>Home Monitor Dashboard</label>
+  <row>
+    <html><h2>
+      Welcome to your new app.  You can customize this app to look and work any way you want.  Here are a few options to get you started:
+      </h2>
+      <ul>
+          <li>Change the pages (or views) in this app.  Edit this view, or create a new one through Splunk Manager.</li>
+          <li>Change the navigation menu for this app.  The navigation menu shows at the top of this view.</li>
+          <li>Read more on building apps in the <a href="http://docs.splunk.com/Documentation/Splunk/latest/Developer/DevIntro">Developer Manual</a>.</li>
+          <li>If you're not seeing any data, enable the "sample data" app in Manager <a href="/manager/search/apps/local">here</a>. Note that this will index sample data which will count toward your daily indexing volume.</li>
+      </ul></html>
+  </row>
+  <row>
+    <chart>
+      <searchName>Last 15 minutes of Remote IP</searchName>
+      <title>Last 15 minutes of Remote IP</title>
+      <option name="charting.chart">line</option>
+    </chart>
+    <chart>
+      <searchName>Last 15 Minutes of IP Address</searchName>
+      <title>Last 15 Minutes of IP Address</title>
+      <option name="charting.chart">line</option>
+    </chart>
+  </row>
+  <row>
+    <table>
+      <searchName>Last 7 days Top In Bound Connections by City</searchName>
+      <title>Last 7 days Top In Bound Connections by City</title>
+    </table>
+    <table>
+      <searchName>Last 7 days Top In Bound Connections by Country</searchName>
+      <title>Last 7 days Top In Bound Connections by Country</title>
+    </table>
+  </row>
+</dashboard>
