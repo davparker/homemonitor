@@ -34,4 +34,18 @@
       <title>Last 7 days Top In Bound Connections by Country</title>
     </table>
   </row>
+  <row>
+    <table>
+      <searchName>Last 60 Minutes In Bound IP's by number of Ports Accessing Table</searchName>
+      <title>Last 60 Minutes In Bound IP's by number of Ports Accessing Table</title>
+      <option name="count">50</option>
+      <option name="dataOverlayMode">heatmap</option>
+      <option name="displayRowNumbers">false</option>
+      <option name="drilldown">all</option>
+    </table>
+    <table>
+      <searchName>Last 60 Minutes In Bound Ports by number of IP's</searchName>
+      <title>Last 60 Minutes In Bound Ports by number of IP's</title>
+    </table>
+  </row>
 </dashboard>
