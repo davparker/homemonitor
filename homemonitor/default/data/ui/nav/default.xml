@@ -1,0 +1,14 @@
+<nav>
+    <collection label="Dashboards">
+        <view name="hm_dashboard" default="true"/>
+    </collection>
+    <collection label="Searches">
+      	<view name="hm_search"/>
+        <view name="hm_formsearch"/>
+        <view name="hm_dropdown"/>
+        <view name="hm_radio"/>
+    </collection>
+    <collection label="Maps">
+	<view name="maps" default="true"/>
+    </collection>
+   </nav>
