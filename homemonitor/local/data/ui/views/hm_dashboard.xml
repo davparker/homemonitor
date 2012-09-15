@@ -42,16 +42,20 @@
   </row>
   <row>
     <table>
-      <searchName>Last 60 Minutes In Bound IP's by number of Ports Accessing Table</searchName>
+      <searchString>index=homemonitor NOT client_ip=192.168* NOT client_ip=0.0* transport="TCP" | stats count, values(traffic_ports) as Ports by client_ip | table client_ip Ports count | sort - count</searchString>
       <title>Last 60 Minutes In Bound IP's by number of Ports Accessing Table</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
       <option name="count">50</option>
       <option name="dataOverlayMode">heatmap</option>
       <option name="displayRowNumbers">false</option>
       <option name="drilldown">all</option>
     </table>
     <table>
-      <searchName>Last 60 Minutes In Bound Ports by number of IP's</searchName>
+      <searchString>index=homemonitor NOT client_ip=192.168* process="IN" | stats count(client_ip) as Count by traffic_ports | sort - Count</searchString>
       <title>Last 60 Minutes In Bound Ports by number of IP's</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
     </table>
   </row>
 </dashboard>

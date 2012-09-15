@@ -1,6 +1,7 @@
 <nav>
     <collection label="Dashboards">
         <view name="hm_dashboard" default="true"/>
+      <view name="traffic_flows" />
     </collection>
     <collection label="Searches">
       	<view name="hm_search"/>
@@ -10,5 +11,8 @@
     </collection>
     <collection label="Maps">
 	<view name="maps" default="true"/>
+    </collection>
+    <collection label="Particles">
+	<view name="hm_particles" default="true"/>
     </collection>
    </nav>

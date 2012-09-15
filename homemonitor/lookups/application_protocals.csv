@@ -80,7 +80,7 @@ dest_port,transport,app,status
 "51","udp",la-maint,
 "52","tcp",xns-time,
 "52","udp",xns-time,
-"53","tcp",domain,
+":53","tcp",domain,
 "53","udp",domain,
 "54","tcp",xns-ch,
 "54","udp",xns-ch,
