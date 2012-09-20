@@ -10,7 +10,7 @@
         <view name="hm_radio"/>
     </collection>
     <collection label="Maps">
-	<view name="maps" default="true"/>
+	<view name="hm_maps" default="true"/>
     </collection>
     <collection label="Particles">
 	<view name="hm_particles" default="true"/>
