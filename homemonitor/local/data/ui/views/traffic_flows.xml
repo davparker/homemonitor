@@ -27,15 +27,19 @@
   </row>
   <row>
     <chart>
-      <searchName>Top Port Requests (In Bound) Last 60 Minutes</searchName>
+      <searchString>index=homemonitor process="IN" | top limit=50 src_port</searchString>
       <title>Top Port Requests (In Bound) Last 60 Minutes</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
       <option name="charting.chart">column</option>
     </chart>
   </row>
   <row>
     <chart>
-      <searchName>Top Port Requests (Out Bound) Last 60 Minutes</searchName>
+      <searchString>index=homemonitor process="OUT" | top limit=50 src_port</searchString>
       <title>Top Port Requests (Out Bound) Last 60 Minutes</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
       <option name="charting.chart">column</option>
     </chart>
   </row>
