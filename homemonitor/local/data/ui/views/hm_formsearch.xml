@@ -2,12 +2,12 @@
   <label>Home Monitor Search</label>
   
   <!-- define master search template, with replacement tokens delimited with $. This is an example, replace with your own search.-->
-  <searchTemplate>index=homemonitor client_ip="$client_ip$"</searchTemplate>
+  <searchTemplate>index=homemonitor src_ip="$src_ip$"</searchTemplate>
 
   <fieldset>
       <!-- the default is a text box, with no seed value; if user does not input
           a value, then the $from$ token in searchTemplate will be removed -->
-      <input type="text" token="client_ip" />
+      <input type="text" token="src_ip" />
   </fieldset>
   
   <row>

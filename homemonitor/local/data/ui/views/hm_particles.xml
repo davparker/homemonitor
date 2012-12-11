@@ -2,7 +2,7 @@
     <label>Traffic Visualization</label>
     <module name="AppBar" layoutPanel="navigationHeader"/>
     <module name="SearchBar" layoutPanel="splSearchControls-inline" autoRun="true">
-        <param name="q">eventtype=not-local-maps-view | geoip client_ip</param>
+        <param name="q">eventtype=not-local-maps-view | geoip src_ip</param>
         <param name="useAssistant">true</param>
         <param name="useTypeahead">true</param>
         <param name="useOwnSubmitButton">False</param>

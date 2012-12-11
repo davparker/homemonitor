@@ -36,7 +36,7 @@
   </row>
   <row>
     <chart>
-      <searchString>index=homemonitor process="OUT" | top limit=50 src_port</searchString>
+      <searchString>index=homemonitor process="OUT" | top limit=50 remote_port</searchString>
       <title>Top Port Requests (Out Bound) Last 60 Minutes</title>
       <earliestTime>-60m@m</earliestTime>
       <latestTime>now</latestTime>
@@ -49,7 +49,7 @@
       <title>Top Blocked IP's</title>
     </table>
     <table>
-      <searchString>index=homemonitor action="BLOCK" NOT client_ip=192.168* | geoip client_ip | stats count(action) as count by client_ip_country_name | sort - count</searchString>
+      <searchString>index=homemonitor action="BLOCK"  | geoip src_ip | stats count(action) as count by src_ip_country_name | sort - count</searchString>
       <title>Top Blocked Countries in the last 7 Days</title>
       <earliestTime>-7d@h</earliestTime>
       <latestTime>now</latestTime>

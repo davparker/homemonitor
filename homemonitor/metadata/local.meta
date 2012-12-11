@@ -16,20 +16,16 @@ version = 4.3.2
 export = none
 
 [nav/default]
-modtime = 1347667120.846480000
-version = 4.3.2
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = nobody
+version = 5.0.1
+modtime = 1355184190.813910000
 
 [props/syslog/EXTRACT-action]
 access = read : [ * ], write : [ admin, power ]
 owner = admin
 modtime = 1347483760.344807000
-version = 4.3.2
-export = system
-
-[props/syslog/EXTRACT-client_ip]
-access = read : [ * ], write : [ admin, power ]
-owner = admin
-modtime = 1346349256.586327000
 version = 4.3.2
 export = system
 
@@ -54,8 +50,8 @@ version = 4.3.2
 
 [savedsearches/Last%2015%20Minutes%20of%20IP%20Address]
 owner = admin
-modtime = 1348112078.206295000
-version = 4.3.4
+modtime = 1355180417.564486000
+version = 5.0.1
 export = none
 
 [savedsearches/Last%2015%20minutes%20of%20Remote%20IP]
@@ -102,8 +98,8 @@ export = none
 
 [savedsearches/Realtime%20Transport%20Traffic%20by%20IP%27s]
 owner = admin
-modtime = 1347667014.263701000
-version = 4.3.2
+modtime = 1355236626.163775000
+version = 5.0.1
 export = none
 
 [savedsearches/Sendmail%20transactions]
@@ -113,8 +109,8 @@ version = 4.3.2
 [views/hm_dashboard]
 access = read : [ * ], write : [ admin, power ]
 owner = nobody
-modtime = 1348709617.619142000
-version = 4.3.4
+modtime = 1355234610.350455000
+version = 5.0.1
 
 [views/sample_dashboard]
 modtime = 1347045502.124970000
@@ -122,8 +118,8 @@ version = 4.3.2
 
 [views/traffic_flows]
 owner = admin
-modtime = 1348682002.074853000
-version = 4.3.4
+modtime = 1355236575.653610000
+version = 5.0.1
 
 [viewstates/%2A%3Amdqkbg27]
 owner = nobody
@@ -261,15 +257,15 @@ modtime = 1347688173.373926000
 [savedsearches/Top%20Blocked%20IP%27s]
 export = none
 owner = admin
-version = 4.3.4
-modtime = 1347688191.484016000
+version = 5.0.1
+modtime = 1355236552.534819000
 
 [eventtypes/not-local-maps-view]
 access = read : [ * ], write : [ admin, power ]
 export = system
 owner = admin
-version = 4.3.4
-modtime = 1347944822.728638000
+version = 5.0.1
+modtime = 1355199345.215701000
 
 [tags/eventtype%3Dnot-local-maps-view]
 access = read : [ * ], write : [ admin, power ]
@@ -325,19 +321,12 @@ owner = admin
 version = 4.3.4
 modtime = 1348113572.424272000
 
-[props/syslog/EXTRACT-traffic_ports]
-access = read : [ * ], write : [ admin, power ]
-export = system
-owner = admin
-version = 4.3.4
-modtime = 1348115305.094916000
-
 [props/syslog/EXTRACT-src_port]
 access = read : [ * ], write : [ admin, power ]
 export = system
 owner = admin
-version = 4.3.4
-modtime = 1348682458.776188000
+version = 5.0.1
+modtime = 1355148563.797812000
 
 [workflow_actions/src_port_lookup]
 access = read : [ * ], write : [ admin, power ]
@@ -357,4 +346,133 @@ modtime = 1348709479.474281000
 owner = nobody
 version = 4.3.4
 modtime = 1348709479.408078000
+
+[]
+access = read : [ * ], write : [ admin, power ]
+export = none
+version = 5.0.1
+modtime = 1355094768.583013000
+
+[props/syslog/EXTRACT-dest_ip]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 5.0.1
+modtime = 1355164686.557484000
+
+[props/syslog/EXTRACT-remote_port]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 5.0.1
+modtime = 1355164924.318113000
+
+[props/syslog/EXTRACT-src_ip]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 5.0.1
+modtime = 1355172845.363098000
+
+[props/syslog/EXTRACT-remote_ip]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 5.0.1
+modtime = 1355165007.440610000
+
+[props/syslog/EXTRACT-dest_port]
+access = read : [ * ], write : [ admin ]
+export = system
+owner = admin
+version = 5.0.1
+modtime = 1355165074.256088000
+
+[viewstates/flashtimeline%3Ahak7z0b5]
+owner = nobody
+version = 5.0.1
+modtime = 1355181327.434941000
+
+[views/duration_dashaboard]
+access = read : [ * ], write : [ admin, power ]
+export = system
+owner = admin
+version = 5.0.1
+modtime = 1355182680.763038000
+
+[savedsearches/Duration%20by%20Remote%20IP%20-%20last%2060%20minutes]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1355183941.369383000
+
+[viewstates/flashtimeline%3Ahak82e94]
+owner = nobody
+version = 5.0.1
+modtime = 1355181485.481625000
+
+[savedsearches/Duration%20by%20Source%20Port%20IN%20Bound]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1355181504.979601000
+
+[viewstates/flashtimeline%3Ahak9t0w5]
+owner = nobody
+version = 5.0.1
+modtime = 1355184407.362373000
+
+[views/duration_dashboard]
+version = 5.0.1
+modtime = 1355235689.554915000
+
+[savedsearches/Top%208%20Cities%20last%2030%20minutes%20real%20time]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1355184435.246152000
+
+[viewstates/flashtimeline%3Ahal4096o]
+owner = nobody
+version = 5.0.1
+modtime = 1355235133.352599000
+
+[savedsearches/Top%2010%20Remote%20IP%27s%20by%20Duration%20in%20Minutes]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1355235388.344873000
+
+[viewstates/flashtimeline%3Ahal4417u]
+owner = nobody
+version = 5.0.1
+modtime = 1355235309.505059000
+
+[savedsearches/Top%2010%20Port%20requests%20by%20Duration%20in%20Minutes]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1355235412.006439000
+
+[viewstates/flashtimeline%3Ahal48f29]
+owner = nobody
+version = 5.0.1
+modtime = 1355235514.097313000
+
+[savedsearches/Top%2010%20Non-Root%20ports]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1355235639.668142000
+
+[viewstates/flashtimeline%3Ahal49f4b]
+owner = nobody
+version = 5.0.1
+modtime = 1355235560.829376000
+
+[savedsearches/Top%2010%20Root%20ports]
+export = none
+owner = admin
+version = 5.0.1
+modtime = 1355235585.780331000
 
