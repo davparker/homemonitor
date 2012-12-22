@@ -3,7 +3,6 @@ homemonitor
 
 Author: Kamilo Amir
 
-Version: 1.1
 Version: 2.0.2
 
 Home Monitor App for Splunk
