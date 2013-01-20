@@ -1,0 +1,23 @@
+<form>
+    <label>Day of the Week</label>
+
+    <!-- Define master search template, with replacement tokens delimited with $ -->
+    <searchTemplate>index=homemonitor date_wday="$date_wday$"</searchTemplate>
+
+    <fieldset>
+        <!-- Define a radio button list, populated from a search. searchWhenChanged propagates any change in selection immediatly to the results. -->
+        <input type="radio" token="date_wday" searchWhenChanged="true">
+            <label>Select Available Day of the Week</label>
+            <choice value="*">Any</choice>
+            <populatingSearch fieldForValue="date_wday" fieldForLabel="date_wday"><![CDATA[index=homemonitor | top date_wday | sistats count by date_wday]]></populatingSearch>
+        </input>
+    </fieldset>
+
+    <row>
+        <!-- output the results as a 50 row events view -->
+        <event>
+            <title>Results</title>
+            <option name="count">50</option>
+        </event>
+    </row>
+</form>

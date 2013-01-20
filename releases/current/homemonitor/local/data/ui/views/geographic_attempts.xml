@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<dashboard>
+  <label>Geographic Attempts</label>
+  <row>
+    <chart>
+      <searchName>Source Ports by Country</searchName>
+      <title>Source Ports by Country</title>
+      <option name="charting.chart">area</option>
+    </chart>
+  </row>
+  <row>
+    <chart>
+      <searchName>Source Country by Port</searchName>
+      <title>Source Country by Port</title>
+      <earliestTime></earliestTime>
+      <latestTime></latestTime>
+      <option name="charting.chart">area</option>
+    </chart>
+  </row>
+</dashboard>
