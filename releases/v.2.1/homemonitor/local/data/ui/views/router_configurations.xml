@@ -31,8 +31,6 @@
     <table>
       <searchName>Configuration Changes to Router by user Last 7 Days</searchName>
       <title>Configuration Changes to Router by user Last 7 Days</title>
-      <earliestTime></earliestTime>
-      <latestTime></latestTime>
       <option name="count">20</option>
       <option name="displayRowNumbers">true</option>
     </table>
