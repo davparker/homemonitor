@@ -3,7 +3,7 @@
   <label>Duration Dashaboard</label>
   <row>
     <chart>
-      <searchName>Top 8 Cities last 30 minutes real time</searchName>
+      <searchName>Top 10 Cities last 30 minutes</searchName>
       <title>Top 8 Cities last 30 minutes real time</title>
       <option name="charting.chart">pie</option>
     </chart>
@@ -12,6 +12,8 @@
     <chart>
       <searchName>Duration by Remote IP - last 60 minutes</searchName>
       <title>Duration by Remote IP - last 60 minutes</title>
+      <earliestTime></earliestTime>
+      <latestTime></latestTime>
       <option name="charting.chart">area</option>
     </chart>
     <table>

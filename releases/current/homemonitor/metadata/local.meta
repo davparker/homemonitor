@@ -50,8 +50,8 @@ version = 4.3.2
 
 [savedsearches/Last%2015%20Minutes%20of%20IP%20Address]
 owner = admin
-modtime = 1355180417.564486000
-version = 5.0.1
+modtime = 1375195373.310433000
+version = 5.0.2
 export = none
 
 [savedsearches/Last%2015%20minutes%20of%20Remote%20IP]
@@ -109,8 +109,8 @@ version = 4.3.2
 [views/hm_dashboard]
 access = read : [ * ], write : [ admin, power ]
 owner = nobody
-modtime = 1358451654.400409000
-version = 5.0.1
+modtime = 1375195310.276838000
+version = 5.0.2
 
 [views/sample_dashboard]
 modtime = 1347045502.124970000
@@ -118,8 +118,8 @@ version = 4.3.2
 
 [views/traffic_flows]
 owner = admin
-modtime = 1358455398.839095000
-version = 5.0.1
+modtime = 1375193025.800184000
+version = 5.0.2
 
 [viewstates/%2A%3Amdqkbg27]
 owner = nobody
@@ -392,8 +392,8 @@ modtime = 1355182680.763038000
 [savedsearches/Duration%20by%20Remote%20IP%20-%20last%2060%20minutes]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1355183941.369383000
+version = 5.0.2
+modtime = 1375195826.945711000
 
 [viewstates/flashtimeline%3Ahak82e94]
 owner = nobody
@@ -403,8 +403,8 @@ modtime = 1355181485.481625000
 [savedsearches/Duration%20by%20Source%20Port%20IN%20Bound]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1355181504.979601000
+version = 5.0.2
+modtime = 1375191239.748640000
 
 [viewstates/flashtimeline%3Ahak9t0w5]
 owner = nobody
@@ -412,14 +412,14 @@ version = 5.0.1
 modtime = 1355184407.362373000
 
 [views/duration_dashboard]
-version = 5.0.1
-modtime = 1355361059.463573000
+version = 5.0.2
+modtime = 1375205175.411032000
 
 [savedsearches/Top%208%20Cities%20last%2030%20minutes%20real%20time]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1355184435.246152000
+version = 5.0.2
+modtime = 1375190890.941346000
 
 [viewstates/flashtimeline%3Ahal4096o]
 owner = nobody
@@ -429,8 +429,8 @@ modtime = 1355235133.352599000
 [savedsearches/Top%2010%20Remote%20IP%27s%20by%20Duration%20in%20Minutes]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1355235388.344873000
+version = 5.0.2
+modtime = 1375195778.084270000
 
 [viewstates/flashtimeline%3Ahal4417u]
 owner = nobody
@@ -451,8 +451,8 @@ modtime = 1355235514.097313000
 [savedsearches/Top%2010%20Non-Root%20ports]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1355235639.668142000
+version = 5.0.2
+modtime = 1375191471.583920000
 
 [viewstates/flashtimeline%3Ahal49f4b]
 owner = nobody
@@ -462,8 +462,8 @@ modtime = 1355235560.829376000
 [savedsearches/Top%2010%20Root%20ports]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1355235585.780331000
+version = 5.0.2
+modtime = 1375191180.260745000
 
 [app/install/is_configured]
 version = 5.0.1
@@ -477,8 +477,8 @@ modtime = 1355360999.954402000
 [savedsearches/Exploitable%20Ports%20Time%20Chart%20%28Last%2024%20Hours%29]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1356322727.641841000
+version = 5.0.2
+modtime = 1375206008.818225000
 
 [viewstates/hm_search%3Ahb860a7i]
 owner = nobody
@@ -541,8 +541,8 @@ modtime = 1358441733.655534000
 [savedsearches/Chatty%20Clients%20Last%2015%20minutes]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1358450808.282560000
+version = 5.0.2
+modtime = 1375191815.404606000
 
 [viewstates/flashtimeline%3Ahc29bssy]
 owner = nobody
@@ -563,8 +563,8 @@ modtime = 1358449332.281026000
 [savedsearches/In%20vs.%20Out%20bound%20traffic%20broken%20down%20by%20Country%20%28Last%2060%20minutes%29]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1358450901.384340000
+version = 5.0.2
+modtime = 1375196099.697889000
 
 [props/syslog/EXTRACT-connection_state]
 access = read : [ * ], write : [ admin ]
@@ -610,8 +610,8 @@ modtime = 1358452954.492634000
 [savedsearches/Connection%20State%20break%20down%20last%2024%20hours]
 export = none
 owner = admin
-version = 5.0.1
-modtime = 1358452976.452643000
+version = 5.0.2
+modtime = 1375206217.411282000
 
 [viewstates/flashtimeline%3Ahc2bz3p0]
 owner = nobody
@@ -704,4 +704,34 @@ modtime = 1367248705.604480000
 owner = admin
 version = 5.0.2
 modtime = 1367248711.921725000
+
+[props/fios/EXTRACT-process]
+export = none
+owner = admin
+version = 5.0.2
+modtime = 1375153245.107453000
+
+[props/fios/EXTRACT-remote_ip]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = nobody
+version = 5.0.2
+modtime = 1375197360.599034000
+
+[props/fios/EXTRACT-remote_port]
+access = read : [ * ], write : [ admin, power ]
+export = none
+owner = nobody
+version = 5.0.2
+modtime = 1375194930.745852000
+
+[viewstates/flashtimeline%3Ahjra87qz]
+owner = nobody
+version = 5.0.2
+modtime = 1375199420.454644000
+
+[savedsearches/Top%2010%20Cities%20last%2030%20minutes]
+owner = admin
+version = 5.0.2
+modtime = 1375199485.557780000
 

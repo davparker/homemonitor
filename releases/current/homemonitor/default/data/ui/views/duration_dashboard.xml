@@ -54,6 +54,8 @@
     <chart>
       <searchName>Exploitable Ports Time Chart (Last 24 Hours)</searchName>
       <title>Exploitable Ports Time Chart (Last 24 Hours)</title>
+      <earliestTime></earliestTime>
+      <latestTime></latestTime>
       <option name="charting.chart">area</option>
     </chart>
   </row>

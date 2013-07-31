@@ -7,6 +7,8 @@
     <collection label="Dashboards">
         <view name="hm_dashboard" />
       	<view name="duration_dashboard" />
+        <view name="router_configurations" />
+        <view name="traffic_trends" />
         <view name="traffic_flows" />
     </collection>
     <collection label="Searches">

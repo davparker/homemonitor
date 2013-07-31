@@ -62,7 +62,7 @@
   </row>
   <row>
     <table>
-      <searchString>index=homemonitor process="IN"  | stats count, values(src_port) as Ports by remote_ip | table remote_ip Ports count | sort - count limit="10"</searchString>
+      <searchString>index=homemonitor sourcetype="fios" process="IN"  | stats count, values(src_port) as Ports by src_ip | table src_ip Ports count | sort - count limit="10"  </searchString>
       <title>Last 60 Minutes In Bound IP's by number of Ports Accessing Table</title>
       <earliestTime>-60m@m</earliestTime>
       <latestTime>now</latestTime>
@@ -72,7 +72,7 @@
       <option name="drilldown">all</option>
     </table>
     <table>
-      <searchString>index=homemonitor  | stats sparkline count(remote_ip) as Count by src_port | sort - Count</searchString>
+      <searchString>index=homemonitor  | stats sparkline count(src_ip) as Count by src_port | sort - Count</searchString>
       <title>Last 60 Minutes In Bound Ports by number of IP's</title>
       <earliestTime>-60m@m</earliestTime>
       <latestTime>now</latestTime>
