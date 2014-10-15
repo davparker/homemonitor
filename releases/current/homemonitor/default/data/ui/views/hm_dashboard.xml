@@ -133,6 +133,7 @@
     </panel>
   </row>
   <row>
+<<<<<<< HEAD
     <panel>
       <chart>
         <title>Events by Day of the Week (Last 7 Days)</title>
@@ -160,5 +161,25 @@
         <option name="charting.axisTitleX.text">Time</option>
       </chart>
     </panel>
+=======
+    <table>
+      <searchString>index=homemonitor sourcetype="fios" process="IN"  | stats count, values(src_port) as Ports by src_ip | table src_ip Ports count | sort - count limit="10"  </searchString>
+      <title>Last 60 Minutes In Bound IP's by number of Ports Accessing Table</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="count">20</option>
+      <option name="dataOverlayMode">heatmap</option>
+      <option name="displayRowNumbers">false</option>
+      <option name="drilldown">all</option>
+    </table>
+    <table>
+      <searchString>index=homemonitor  | stats sparkline count(src_ip) as Count by src_port | sort - Count</searchString>
+      <title>Last 60 Minutes In Bound Ports by number of IP's</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+>>>>>>> FETCH_HEAD
   </row>
 </form>

@@ -1,0 +1,21 @@
+<nav>
+    <collection label="Setup">
+        <view name="arch" default="true" />
+	<view name="setup" />
+        <a href="mailto:kam@splunk.com?Subject=HomeMonitor">Send Feedback...</a>
+    </collection>
+    <collection label="Dashboards">
+        <view name="hm_dashboard" />
+      	<view name="duration_dashboard" />
+        <view name="traffic_flows" />
+    </collection>
+    <collection label="Searches">
+      	<view name="hm_search"/>
+        <view name="hm_formsearch"/>
+        <view name="hm_dropdown"/>
+        <view name="hm_radio"/>
+    </collection>
+    <collection label="Maps">
+	<view name="hm_maps_src" />
+    </collection>
+   </nav>

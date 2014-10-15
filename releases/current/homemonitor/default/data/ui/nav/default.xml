@@ -7,6 +7,10 @@
     <collection label="Dashboards">
         <view name="hm_dashboard" />
       	<view name="duration_dashboard" />
+<<<<<<< HEAD
+=======
+        <view name="router_configurations" />
+>>>>>>> FETCH_HEAD
         <view name="traffic_trends" />
         <view name="traffic_flows" />
         <view name="router_configurations" />

@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<dashboard>
+  <label>Home Monitor Dashboard</label>
+  <row>
+    <html><h2>
+      Welcome to Home Monitor App. This application was built on Core Splunk to show the traffic on your network through the syslog on your cable modem router.  If you need help setting up your router, please look to your provider's website for assistance.
+      </h2>
+      <ul>
+          <li>These views show the in bound and out bound traffic.  You should download the Google Maps app and MAXMIND (free downloads via splunk.com).</li>
+	  <li>Make sure to configure UDP on Splunk to accept traffic via UDP port 514, if you're going to use the raw feed from your modem.</li>
+	  <li>If you need assistance, please visit <a href="https://github.com/amiracle/homemonitor">Home Monitor GitHub</a></li>
+      </ul></html>
+  </row>
+  <row>
+    <chart>
+      <searchString>index=homemonitor process="in" | timechart count(process) by date_wday</searchString>
+      <title>Traffic by Day of the Week (Last 7 Days)</title>
+      <earliestTime>-7d</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="charting.chart">area</option>
+    </chart>
+  </row>
+  <row>
+    <chart>
+      <searchString>index=homemonitor sourcetype=fios process=IN | timechart count(process) by remote_ip usenull=false, useother=false</searchString>
+      <title>Last 15 minutes of IN Bound IP's</title>
+      <earliestTime>-15m@m</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="charting.chart">line</option>
+      <option name="drilldown">all</option>
+    </chart>
+    <chart>
+      <searchName>Last 15 Minutes of IP Address</searchName>
+      <title>Last 15 Minutes of OUT Bound IP Address</title>
+      <option name="charting.chart">line</option>
+      <option name="charting.chart.nullValueMode">gaps</option>
+      <option name="charting.chart.stackMode">default</option>
+      <option name="charting.layout.splitSeries">false</option>
+      <option name="charting.legend.placement">right</option>
+      <option name="charting.secondaryAxis.maximumNumber">""</option>
+      <option name="charting.secondaryAxis.minimumNumber">""</option>
+      <option name="charting.secondaryAxis.scale">""</option>
+    </chart>
+  </row>
+  <row>
+    <table>
+      <searchString>index=homemonitor process="IN" NOT src_ip=192.168.* |  geoip src_ip | stats sparkline count(src_ip) as Count by src_ip_country_name | sort - Count</searchString>
+      <title>Last 7 days Top In Bound Connections by Country</title>
+      <earliestTime>-7d</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+    <table>
+      <searchString>index=homemonitor process="IN" NOT src_ip=192.168.* |  geoip src_ip | stats sparkline count(src_ip) as Count by src_ip_city | sort - Count</searchString>
+      <title>Last 7 days Top In Bound Connections by City</title>
+      <earliestTime>-7d</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+  </row>
+  <row>
+    <table>
+      <searchString>index=homemonitor sourcetype="fios" process="IN"  | stats count, values(src_port) as Ports by src_ip | table src_ip Ports count | sort - count limit="10"  </searchString>
+      <title>Last 60 Minutes In Bound IP's by number of Ports Accessing Table</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="count">20</option>
+      <option name="dataOverlayMode">heatmap</option>
+      <option name="displayRowNumbers">false</option>
+      <option name="drilldown">all</option>
+    </table>
+    <table>
+      <searchString>index=homemonitor  | stats sparkline count(src_ip) as Count by src_port | sort - Count</searchString>
+      <title>Last 60 Minutes In Bound Ports by number of IP's</title>
+      <earliestTime>-60m@m</earliestTime>
+      <latestTime>now</latestTime>
+      <option name="count">10</option>
+      <option name="displayRowNumbers">false</option>
+    </table>
+  </row>
+</dashboard>
