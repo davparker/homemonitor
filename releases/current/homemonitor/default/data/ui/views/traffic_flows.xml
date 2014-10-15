@@ -1,61 +1,125 @@
-<?xml version='1.0' encoding='utf-8'?>
-<dashboard>
+<form>
   <label>Traffic Flows</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Select Time Interval</label>
+      <default>
+        <earliestTime>-60m@m</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
   <row>
-    <chart>
-      <searchName>Realtime IN Bound TCP Traffic (30 Minute)</searchName>
-      <title>Realtime IN Bound TCP Traffic (30 Minute)</title>
-      <option name="charting.chart">radialGauge</option>
-    </chart>
-    <chart>
-      <searchName>Realtime OUT Bound TCP Traffic (30 Minute)</searchName>
-      <title>Realtime OUT Bound TCP Traffic (30 Minute)</title>
-      <option name="charting.chart">radialGauge</option>
-    </chart>
+    <panel>
+      <chart>
+        <title>Top Port Requests (In Bound)</title>
+        <searchString>index=homemonitor process="IN" | top limit=10 src_port</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="charting.chart">column</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Top Blocked Ports</title>
+        <searchString>index=homemonitor sourcetype=fios action="BLOCK" process=IN   | stats count by blocked_port | sort -count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>Top Port Requests (Out Bound)</title>
+        <searchString>index=homemonitor process="OUT" | top limit=10 src_port</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="charting.chart">column</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
   </row>
   <row>
-    <chart>
-      <searchName>Realtime Transport Traffic by IP's</searchName>
-      <title>Realtime Transport Traffic by IP's</title>
-      <option name="charting.chart">pie</option>
-    </chart>
-    <chart>
-      <searchName>Last 7 days traffic Accept vs. Blocks</searchName>
-      <title>Last 7 days traffic Accept vs. Blocks</title>
-      <option name="charting.chart">pie</option>
-    </chart>
+    <panel>
+      <table>
+        <title>Top Blocked IP's</title>
+        <searchString>index=homemonitor sourcetype=fios action="BLOCK" NOT blocked_ip=192.168* | stats count, list( action) by blocked_port, blocked_ip | table blocked_port, blocked_ip, count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Top Blocked Countries</title>
+        <searchString>index=homemonitor sourcetype=fios action="BLOCK"  | iplocation blocked_ip | stats count(action) as count by Country | sort - count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="count">10</option>
+        <option name="dataOverlayMode">highlow</option>
+        <option name="displayRowNumbers">true</option>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
   </row>
-  <row>
-    <chart>
-      <searchString>index=homemonitor process="IN" | top limit=50 src_port</searchString>
-      <title>Top Port Requests (In Bound) Last 60 Minutes</title>
-      <earliestTime>-60m@m</earliestTime>
-      <latestTime>now</latestTime>
-      <option name="charting.chart">column</option>
-    </chart>
-  </row>
-  <row>
-    <chart>
-      <searchString>index=homemonitor process="OUT" | top limit=50 remote_port</searchString>
-      <title>Top Port Requests (Out Bound) Last 60 Minutes</title>
-      <earliestTime>-60m@m</earliestTime>
-      <latestTime>now</latestTime>
-      <option name="charting.chart">column</option>
-    </chart>
-  </row>
-  <row>
-    <table>
-      <searchName>Top Blocked IP's</searchName>
-      <title>Top Blocked IP's</title>
-    </table>
-    <table>
-      <searchString>index=homemonitor action="BLOCK"  | geoip src_ip | stats count(action) as count by src_ip_country_name | sort - count</searchString>
-      <title>Top Blocked Countries in the last 7 Days</title>
-      <earliestTime>-7d@h</earliestTime>
-      <latestTime>now</latestTime>
-      <option name="count">10</option>
-      <option name="dataOverlayMode">highlow</option>
-      <option name="displayRowNumbers">true</option>
-    </table>
-  </row>
-</dashboard>
+</form>

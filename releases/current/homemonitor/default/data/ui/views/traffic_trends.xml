@@ -1,0 +1,174 @@
+<form stylesheet="single_decorations.css, toggle.css" script="toggle.js">
+  <label>Traffic Trends</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Time Span</label>
+      <default>
+        <earliestTime>-60m@m</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Total Events</title>
+        <searchString>index=homemonitor sourcetype=fios | stats count by process | stats avg(count) as avg | eval resptime = ceiling(avg) | fields resptime | rangemap field=resptime low=1-500 guarded=501-2500 severe=2500-10000</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="field">resptime</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=homemonitor sourcetype=fios spent&gt;999
+                | eval resptime=ceiling(spent/1000) | timechart count by resptime</option>
+        <option name="classField">range</option>
+        <option name="drilldown">none</option>
+        <option name="underLabel">Total Events</option>
+      </single>
+      <single>
+        <title>IN Bound Events</title>
+        <searchString>index=homemonitor sourcetype=fios process=IN | stats count | stats avg(count) as avg | eval resptime = ceiling(avg) | fields resptime | rangemap field=resptime low=1-500 guarded=501-2500 severe=2500-10000</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="field">resptime</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=homemonitor sourcetype=fios process=IN spent&gt;999
+                | eval resptime=ceiling(spent/1000) | timechart count by resptime</option>
+        <option name="classField">range</option>
+        <option name="drilldown">none</option>
+        <option name="underLabel">IN Bound Events</option>
+      </single>
+      <single>
+        <title>OUT Bound Events</title>
+        <searchString>index=homemonitor sourcetype=fios process=OUT | stats count | stats avg(count) as avg | eval resptime = ceiling(avg) | fields resptime | rangemap field=resptime low=1-500 guarded=501-2500 severe=2500-10000</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="linkView">charting</option>
+        <option name="field">uptime</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=_internal host="emotz-mba13.local" sourcetype="splunk_web_access"  | timechart count by status</option>
+        <option name="classField">range</option>
+        <option name="drilldown">none</option>
+        <option name="underLabel">OUT Bound Events</option>
+      </single>
+      <single>
+        <title>Blocked Events</title>
+        <searchString>index=homemonitor sourcetype=fios action=BLOCK | stats count | rangemap field=count low=0-10 guarded=11-20 elevated=21-30 high=31-60 severe=61-99</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="field">count</option>
+        <option name="field">count</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=homemonitor sourcetype=fios earliest=-24h | timechart count by action usenull=false, useother=false</option>
+        <option name="classField">range</option>
+        <option name="drilldown">none</option>
+        <option name="underLabel">Blocked Events</option>
+      </single>
+      <single id="single">
+        <title>Total Splunk Users</title>
+        <searchString>index=_internal user!=splunk* user!="nobody" user!="-" | dedup user | stats count |  rangemap field=count low=0-10 guarded=11-20 elevated=21-30 high=31-60 severe=61-99</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="field">count</option>
+        <option name="field">count</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=_internal earliest=-24h | timechart count by user usenull=false, useother=false</option>
+        <option name="classField">range</option>
+        <option name="underLabel">Users Logged On</option>
+        <option name="drilldown">none</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Chatty Clients</title>
+        <searchString>index=homemonitor sourcetype=fios  process=OUT src_ip=192.168.1.0/8 state="Connection closed" OR state="Connection open" | timechart count(process) by src_ip</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">Connections</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Accept vs. Block</title>
+        <searchString>index=homemonitor sourcetype=fios  | timechart per_hour(eval(action="BLOCK")) AS BLOCK, per_hour(eval(action="ACCEPT")) AS ACCEPT</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="charting.chart">area</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>In vs. Out bound traffic by transport</title>
+        <searchString>index=homemonitor sourcetype=fios  state="Connection closed" OR state="Connection open" | timechart per_hour(eval(process="IN")) AS IN, per_hour(eval(process="OUT")) AS OUT, by transport</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="charting.axisTitleY.text">Connections</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.primaryAxisTitle.text">Time</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+      </chart>
+    </panel>
+  </row>
+</form>

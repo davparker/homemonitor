@@ -1,0 +1,112 @@
+<form>
+  <label>Map of Connections</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Select Time Span</label>
+      <default>
+        <earliestTime>-4h@m</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <map>
+        <title>Blocked Attempts</title>
+        <searchString>index=homemonitor sourcetype=fios action=BLOCK process="IN" | iplocation blocked_ip | geostats count as "Attempts", values(blocked_port) as "Ports"</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.map.center">(0,0)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.markerLayer.markerMaxSize">50</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+    <panel>
+      <table>
+        <title>Blocked Sparklines</title>
+        <searchString>index=homemonitor sourcetype=fios action=BLOCK process="IN"  |  stats sparkline count by blocked_port | sort -count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <map>
+        <title>In Bound Connections by Action</title>
+        <searchString>index=homemonitor sourcetype=fios | iplocation ext_ip | geostats latfield=lat longfield=lon count by action</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="height">400px</option>
+        <option name="mapping.seriesColors">[0x5379af,0x9ac23c,0xf7902b,0x956d95,0x6ab7c7,0xd85d3c,0xfac51c,0xdd86af]</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerMaxSize">60</option>
+        <option name="mapping.map.center">(30.810646,-10.556976)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+    <panel>
+      <table>
+        <title>Action Sparkline</title>
+        <searchString>index=homemonitor sourcetype=fios  NOT src_ip=192.168.* |  iplocation ext_ip | stats sparkline count by action | sort -count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <map>
+        <title>In Bound Connections by transport(TCP/UDP)</title>
+        <searchString>index=homemonitor sourcetype=fios | iplocation ext_ip | geostats latfield=lat longfield=lon count by transport</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="height">400px</option>
+        <option name="mapping.seriesColors">[0x5379af,0x9ac23c,0xf7902b,0x956d95,0x6ab7c7,0xd85d3c,0xfac51c,0xdd86af]</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerMaxSize">60</option>
+        <option name="mapping.map.center">(30.810646,-10.556976)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+    <panel>
+      <table>
+        <title>Transport Sparklines</title>
+        <searchString>index=homemonitor sourcetype=fios  NOT src_ip=192.168.* |  iplocation ext_ip | stats sparkline count by transport | sort -count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>
