@@ -1,0 +1,125 @@
+<form>
+  <label>Map of Connections</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Select Time Span</label>
+      <default>
+        <earliestTime>-4h@m</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+    <input type="dropdown" token="sourcetype" searchWhenChanged="true">
+      <label>Select your sourcetype</label>
+      <populatingSearch fieldForLabel="sourcetype" fieldForValue="sourcetype">index=homemonitor | dedup sourcetype | table sourcetype</populatingSearch>
+      <default>fios</default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <map>
+        <title>Blocked Attempts</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ action=BLOCK | iplocation src_ip | geostats count as "Attempts", values(src_port) as "Ports"</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.map.center">(0,0)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.markerLayer.markerMaxSize">50</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+    <panel>
+      <table>
+        <title>Blocked Sparklines</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ action=BLOCK  |  stats sparkline count by blocked_port | sort -count</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <map>
+        <title>In Bound Connections by Action</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ | iplocation src_ip | geostats latfield=lat longfield=lon count by action</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="height">400px</option>
+        <option name="mapping.seriesColors">[0x5379af,0x9ac23c,0xf7902b,0x956d95,0x6ab7c7,0xd85d3c,0xfac51c,0xdd86af]</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerMaxSize">60</option>
+        <option name="mapping.map.center">(30.810646,-10.556976)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+    <panel>
+      <table>
+        <title>Action Sparkline</title>
+        <searchString>index=homemonitor sourcetype=$sourcetype$  NOT src_ip=192.168.* |  iplocation ext_ip | stats sparkline count by action | sort -count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <map>
+        <title>In Bound Connections by transport(TCP/UDP)</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ | iplocation src_ip | geostats latfield=lat longfield=lon count by transport</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="height">400px</option>
+        <option name="mapping.seriesColors">[0x5379af,0x9ac23c,0xf7902b,0x956d95,0x6ab7c7,0xd85d3c,0xfac51c,0xdd86af]</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerMaxSize">60</option>
+        <option name="mapping.map.center">(30.810646,-10.556976)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+    <panel>
+      <table>
+        <title>Transport Sparklines</title>
+        <searchString>index=homemonitor sourcetype=$sourcetype$  NOT src_ip=192.168.* |  iplocation ext_ip | stats sparkline count by transport | sort -count</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

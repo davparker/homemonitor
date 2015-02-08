@@ -1,0 +1,28 @@
+<nav>
+    <collection label="Setup">
+        <view name="arch" default="true" />
+	<view name="walkthrough" />
+        <a href="mailto:kam@splunk.com?Subject=HomeMonitor">Send Feedback...</a>
+    </collection>  
+  <collection label="PF Sense Firewall">
+  <view name="pfsense_firewall_stats" />
+  <view name="pfsense_firewall_dashboard" />
+  </collection>
+    <collection label="Dashboards">
+        <view name="hm_dashboard" />
+      	<view name="duration_dashboard" />
+        <view name="traffic_trends" />
+        <view name="traffic_flows" />
+        <view name="router_configurations" />
+    </collection>
+    <view name="search" />
+    <collection label="Maps">
+	<view name="map_of_connections" /> 
+    </collection>
+    <collection label="Bad Guy Hunter">
+    <view name="bad_guy"/>
+    </collection>
+    <collection label="Pivot">
+    <view name="data_models" />
+    </collection>
+</nav>

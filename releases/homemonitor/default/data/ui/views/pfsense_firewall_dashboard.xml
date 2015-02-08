@@ -1,0 +1,87 @@
+<form>
+  <label>pfSense Firewall Dashboard</label>
+  <fieldset submitButton="false">
+    <input type="time" token="time">
+      <label>Time</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <title>Blocks from IP's</title>
+        <search>
+          <query>index=* sourcetype=pfsense * NOT action=pass NOT src_ip=192.168.1.1/24 | transaction src_ip, src_port startswith=*block* maxspan=1s | stats count, values(src_ip) as "Source IP's" by action, dest_port, transport | rename dest_port as "Destination Port" | sort -count</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+    <panel>
+      <single>
+        <title>Did they get in?</title>
+        <search>
+          <query>index=* sourcetype=pfsense  | transaction src_ip,src_port startswith=*rule*  maxspan=-1s | stats count(eval(action=="block")) as blocked, count(eval(action=="pass")) as passed by dest_ip | search passed &gt; 1 blocked &gt; 1 | stats count | eval didthey=if(count&lt;=0, "no", "yes") | table didthey</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="count">10</option>
+        <option name="linkView">search</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <map>
+        <title>Blocked Traffic</title>
+        <search>
+          <query>index=* sourcetype=pfsense NOT action=pass | transaction src_ip, src_port startswith=*block* maxspan=1s | streamstats count, values(dest_ip) by action, dest_port, transport | iplocation dest_ip | geostats count(action) by action</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.drilldown">all</option>
+        <option name="mapping.map.center">(0,0)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.markerLayer.markerMaxSize">50</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+    <panel>
+      <map>
+        <title>Passed Traffic</title>
+        <search>
+          <query>index=* sourcetype=pfsense NOT action=block | transaction dest_ip, dest_port startswith=*pass* maxspan=1s | streamstats count, values(dest_ip) by action, dest_port, transport | iplocation dest_ip | geostats count(action) by action</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="mapping.data.maxClusters">100</option>
+        <option name="mapping.drilldown">all</option>
+        <option name="mapping.map.center">(0,0)</option>
+        <option name="mapping.map.zoom">2</option>
+        <option name="mapping.markerLayer.markerMaxSize">50</option>
+        <option name="mapping.markerLayer.markerMinSize">10</option>
+        <option name="mapping.markerLayer.markerOpacity">0.8</option>
+        <option name="mapping.tileLayer.maxZoom">7</option>
+        <option name="mapping.tileLayer.minZoom">0</option>
+        <option name="drilldown">all</option>
+      </map>
+    </panel>
+  </row>
+</form>
