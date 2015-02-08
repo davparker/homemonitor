@@ -7,6 +7,8 @@ Version: 3.1.0
 
 Home Monitor App for Splunk
 
+App Location: https://apps.splunk.com/app/1214/
+
 Welcome to Home Monitor for Splunk! This tool will allow you to visualize the traffic that is coming to your home modem (DSL, FiOS or other).  You only have to point the syslog information to your instance of Splunk and you'll be able to immediately be able to see the data flowing in. The contents of this repository include the setup screen shots located in the html and img directories.  Please use them as a quick reference guide in setting up your Verizon FiOS router.  
 
 
@@ -24,11 +26,11 @@ Once the data input is in (more on that below), you will be able to see all of t
 
 What's new:
 
-        1) Data Input - When onboarding your data source, you'll need to first enable the Data Input and then decide if you want to Splunk automatically sourcetype your data based on your router's hostname.  You can also manually change the sourcetype to fios, asus, pfsense, netgear or skyhub.
+1) Data Input - When onboarding your data source, you'll need to first enable the Data Input and then decide if you want to Splunk automatically sourcetype your data based on your router's hostname.  You can also manually change the sourcetype to fios, asus, pfsense, netgear or skyhub.
 
-        2) Lookup - The lookup, action_lookup.csv, is meant to help normalize the action of the firewall so that all the dashboards will populate regardless of what router you have.
+2) Lookup - The lookup, action_lookup.csv, is meant to help normalize the action of the firewall so that all the dashboards will populate regardless of what router you have.
 
-        3) New updated dashboards - I've gone through and vetted all the dashboards to make sure they make some logical sense.  I stopped using the 'process' field since it did not exist in all the routers syslog data.  Instead, I determined that outbound connections were iniated by src_ip = 192.168.* and inbound connections were iniated by NOT src_ip=192.168.* .
+3) New updated dashboards - I've gone through and vetted all the dashboards to make sure they make some logical sense.  I stopped using the 'process' field since it did not exist in all the routers syslog data.  Instead, I determined that outbound connections were iniated by src_ip = 192.168.* and inbound connections were iniated by NOT src_ip=192.168.* .
 
 
 What might need to be done:
