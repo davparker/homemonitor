@@ -1,0 +1,128 @@
+<form stylesheet="single_decorations.css, toggle.css" script="toggle.js">
+  <label>Home Network Overview</label>
+  <description>This Dashboard will launch you into the three main dashboards of this App.  The first is the Intrusions Dynamic Dashboard, it shows you information about IP's trying to get into your network. The second dashboard lets you understand what IP's your devices are talking to on the internet. The third dashboard will take show you top OUT bound traffic.  Lastly, the fourth dashboard will show you the blocked attempts for your network.</description>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Time Span</label>
+      <default>
+        <earliestTime>-60m@m</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+    <input type="dropdown" token="sourcetype" searchWhenChanged="true">
+      <label>Select a sourcetype to populate the dashboard</label>
+      <search>
+        <query>index=homemonitor |  top 2 sourcetype</query>
+        <earliest>-15m</earliest>
+        <latest>now</latest>
+      </search>
+      <fieldForLabel>sourcetype</fieldForLabel>
+      <fieldForValue>sourcetype</fieldForValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Intrusion Detection</title>
+        <search>
+          <query>index=homemonitor  sourcetype=$sourcetype$   | transaction src_ip,dest_ip maxspan=20s | stats count(eval(action2=="BLOCK")) as blocked, count(eval(action2=="ACCEPT")) as passed by dest_ip | search passed &gt; 1 blocked &gt; 1 | stats count | eval didthey=if(count&lt;=0, "no", "yes") | table didthey</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="beforeLabel">Did they get into my network?</option>
+        <option name="afterLabel">Click Here</option>
+        <option name="drilldown">all</option>
+        <option name="linkView">Intrusions</option>
+        <option name="field">didthey</option>
+        <option name="linkFields">afterlabel, didthey</option>
+      </single>
+      <single>
+        <title>Average Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ | stats count  | stats avg(count) as avg | eval resptime = ceiling(avg) | fields resptime | rangemap field=resptime low=1-500 guarded=501-2500 severe=2500-10000</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="field">resptime</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=homemonitor sourcetype=$sourcetype$ spent&gt;999
+                | eval resptime=ceiling(spent/1000) | timechart count by resptime</option>
+        <option name="classField">range</option>
+        <option name="drilldown">avg</option>
+        <option name="underLabel">Average Events</option>
+      </single>
+      <single>
+        <title>IN Bound Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$  NOT [search DHCPACK | rename nat_ip as src_ip | table src_ip] | stats count | rangemap field=count low=1-200 guarded=201-2500 severe=2501-10000</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="field">count</option>
+        <option name="linkView">home_network_topology</option>
+        <option name="classField">range</option>
+        <option name="drilldown">all</option>
+        <option name="underLabel">Click Here</option>
+        <option name="linkFields">underlabel, count</option>
+      </single>
+      <single>
+        <title>OUT Bound Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ [search DHCPACK | rename nat_ip as src_ip | table src_ip] | stats count  | fields count | rangemap field=count low=1-200 guarded=201-2500 severe=2501-10000</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="linkView">traffic_flows</option>
+        <option name="field">count</option>
+        <option name="linkView">traffic_flows</option>
+        <option name="classField">range</option>
+        <option name="drilldown">all</option>
+        <option name="underLabel">Click Here</option>
+        <option name="linkFields">underlabel, count</option>
+      </single>
+      <single>
+        <title>Blocked Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ action2=BLOCK | stats count | rangemap field=count low=0-10 guarded=11-20 elevated=21-30 high=31-60 severe=61-99</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="field">count</option>
+        <option name="linkView">traffic_flows</option>
+        <option name="classField">range</option>
+        <option name="drilldown">all</option>
+        <option name="underLabel">Click Here</option>
+        <option name="linkFields">underlabel, result</option>
+      </single>
+    </panel>
+  </row>
+  <row></row>
+  <row>
+    <panel>
+      <chart>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$  | timechart per_hour(eval(action2="BLOCK")) AS BLOCK, per_hour(eval(action2="ACCEPT")) AS ACCEPT</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.axisY2.enabled">undefined</option>
+      </chart>
+    </panel>
+  </row>
+  <row></row>
+  <row>
+    <panel>
+      <chart>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$  | eval direction=upper(direction) | timechart per_hour(eval(direction="IN")) AS IN, per_hour(eval(direction="OUT")) AS OUT, by transport</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.axisY2.enabled">undefined</option>
+      </chart>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,225 @@
+<form stylesheet="single_decorations.css, toggle.css" script="toggle.js">
+  <label>Traffic Trends</label>
+  <description>The traffic trends I was most interested in was the number of incoming connections and to see if anyone was able to get into my network. This dashboard shows you how many connections occurred, and if they were successful.</description>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Time Span</label>
+      <default>
+        <earliestTime>-60m@m</earliestTime>
+        <latestTime>now</latestTime>
+      </default>
+    </input>
+    <input type="dropdown" token="sourcetype" searchWhenChanged="true">
+      <label>Select your sourcetype</label>
+      <search>
+        <query>index=homemonitor | dedup sourcetype | table sourcetype</query>
+        <earliest>-15m</earliest>
+        <latest>now</latest>
+      </search>
+      <default>fios</default>
+      <fieldForLabel>sourcetype</fieldForLabel>
+      <fieldForValue>sourcetype</fieldForValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <single>
+        <title>Intrusion Detection</title>
+        <search>
+          <query>index=* sourcetype=$sourcetype$  | transaction src_ip,src_port startswith=*rule*  maxspan=-1s | stats count(eval(action2=="BLOCK")) as blocked, count(eval(action2=="ACCEPT")) as passed by dest_ip | search passed &gt; 1 blocked &gt; 1 | stats count | eval didthey=if(count&lt;=0, "no", "yes") | table didthey</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">undefined</option>
+        <option name="rowNumbers">undefined</option>
+        <option name="drilldown">all</option>
+        <option name="field">didthey</option>
+        <option name="beforeLabel">Did they get into my network?</option>
+        <option name="linkView">search</option>
+      </single>
+      <single>
+        <title>Average Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ | stats count  | stats avg(count) as avg | eval resptime = ceiling(avg) | fields resptime | rangemap field=resptime low=1-500 guarded=501-2500 severe=2500-10000</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="field">resptime</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=homemonitor sourcetype=$sourcetype$ spent&gt;999
+                | eval resptime=ceiling(spent/1000) | timechart count by resptime</option>
+        <option name="classField">range</option>
+        <option name="drilldown">avg</option>
+        <option name="underLabel">Average Events</option>
+      </single>
+      <single>
+        <title>IN Bound Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$  NOT src_ip=192.168.*| stats count by src_ip | stats avg(count) as avg | eval resptime = ceiling(avg) | fields resptime | rangemap field=resptime low=1-500 guarded=501-2500 severe=2500-10000</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="field">resptime</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=homemonitor sourcetype=$sourcetype$ direction=IN spent&gt;999
+                | eval resptime=ceiling(spent/1000) | timechart count by resptime</option>
+        <option name="classField">range</option>
+        <option name="drilldown">avg</option>
+        <option name="underLabel">IN Bound Events</option>
+      </single>
+      <single>
+        <title>OUT Bound Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ src_ip=192.168.*| stats count by src_ip | stats avg(count) as avg | eval resptime = ceiling(avg) | fields resptime | rangemap field=resptime low=1-500 guarded=501-2500 severe=2500-10000</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="linkView">charting</option>
+        <option name="field">uptime</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=_internal sourcetype="splunk_web_access"  | timechart count by status</option>
+        <option name="classField">range</option>
+        <option name="drilldown">avg</option>
+        <option name="underLabel">OUT Bound Events</option>
+      </single>
+      <single>
+        <title>Blocked Events</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$ action2=BLOCK | stats count | rangemap field=count low=0-10 guarded=11-20 elevated=21-30 high=31-60 severe=61-99</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="field">count</option>
+        <option name="field">count</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=homemonitor sourcetype=$sourcetype$ earliest=-24h | timechart count by action2 usenull=false, useother=false</option>
+        <option name="classField">range</option>
+        <option name="drilldown">count</option>
+        <option name="underLabel">Blocked Events</option>
+      </single>
+      <single id="single">
+        <title>Total Splunk Users</title>
+        <searchString>index=_internal user!=splunk* user!="nobody" user!="-" | dedup user | stats count |  rangemap field=count low=0-10 guarded=11-20 elevated=21-30 high=31-60 severe=61-99</searchString>
+        <earliestTime>$time.earliest$</earliestTime>
+        <latestTime>$time.latest$</latestTime>
+        <option name="field">count</option>
+        <option name="field">count</option>
+        <option name="linkFields">results</option>
+        <option name="linkView">charting</option>
+        <option name="linkSearch">index=_internal earliest=-24h | timechart count by user usenull=false, useother=false</option>
+        <option name="classField">range</option>
+        <option name="underLabel">Users Logged On</option>
+        <option name="drilldown">count</option>
+      </single>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Chatty Clients</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$  src_ip=192.168.1.0/8 | timechart count by src_ip</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">Connections</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Accept vs. Block</title>
+      <chart>
+        <title>Universal Dashboard</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$  | timechart per_hour(eval(action2="BLOCK")) AS BLOCK, per_hour(eval(action2="ACCEPT")) AS ACCEPT</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.chart">area</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>In vs. Out bound traffic by transport</title>
+      <chart>
+        <title>FiOS Only</title>
+        <search>
+          <query>index=homemonitor sourcetype=$sourcetype$  state="Connection closed" OR state="Connection open" | timechart per_hour(eval(direction="IN")) AS IN, per_hour(eval(direction="OUT")) AS OUT, by transport</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.axisTitleY.text">Connections</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.chart.nullValueMode">connect</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.primaryAxisTitle.text">Time</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+      </chart>
+    </panel>
+  </row>
+</form>

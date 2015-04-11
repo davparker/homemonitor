@@ -1,0 +1,140 @@
+<form>
+  <label>pfSense Firewall Stats</label>
+  <title>This dashboard is for pfSense firewalls only</title>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="time">
+      <label>Time</label>
+      <default>
+        <earliest>-15m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <chart>
+        <title>Block and Pass over Time</title>
+        <search>
+          <query>index=homemonitor sourcetype=pf*  | timechart count(eval(action=="block")) as block, count(eval(action=="pass")) as pass</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Block by Country</title>
+        <search>
+          <query>index=homemonitor sourcetype=pf*  | iplocation dest_ip | timechart count(eval(action=="block")) as block, count(eval(action=="pass")) as pass by Country usenull=false, useother=false</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.chart">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Source IP Blocked and Passed</title>
+        <search>
+          <query>index=homemonitor sourcetype=pf*  | stats count(eval(action=="block")) as block, count(eval(action=="pass")) as pass by src_ip | where pass &gt; 1 AND block &gt; 1</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>Destination IP Allowed and Blocked</title>
+        <search>
+          <query>index=homemonitor sourcetype=pf*  | stats count(eval(action=="block")) as block, count(eval(action=="pass")) as pass by dest_ip | where pass &gt; 1 AND block &gt; 1</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">cell</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Overall Traffic Last 30 Days</title>
+        <search ref="Overall Traffic Last 30 Days"></search>
+        <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
+        <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
+        <option name="charting.axisTitleX.visibility">visible</option>
+        <option name="charting.axisTitleY.visibility">visible</option>
+        <option name="charting.axisTitleY2.visibility">visible</option>
+        <option name="charting.axisX.scale">linear</option>
+        <option name="charting.axisY.scale">linear</option>
+        <option name="charting.axisY2.enabled">false</option>
+        <option name="charting.axisY2.scale">inherit</option>
+        <option name="charting.chart">line</option>
+        <option name="charting.chart.bubbleMaximumSize">50</option>
+        <option name="charting.chart.bubbleMinimumSize">10</option>
+        <option name="charting.chart.bubbleSizeBy">area</option>
+        <option name="charting.chart.nullValueMode">gaps</option>
+        <option name="charting.chart.sliceCollapsingThreshold">0.01</option>
+        <option name="charting.chart.stackMode">default</option>
+        <option name="charting.chart.style">shiny</option>
+        <option name="charting.drilldown">all</option>
+        <option name="charting.layout.splitSeries">0</option>
+        <option name="charting.legend.labelStyle.overflowMode">ellipsisMiddle</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,48 @@
+<form>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="time">
+      <input type="text" token="dest_ip" searchWhenChanged="true"></input>
+      <label>Time</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table id="master">
+        <title>Intrusions</title>
+        <search>
+          <query>index=homemonitor  sourcetype=pfsense    | transaction src_ip,dest_ip maxspan=20s  | stats count(eval(action2=="BLOCK")) as blocked, count(eval(action2=="ACCEPT")) as passed by dest_ip  | search passed &gt; 1 blocked &gt; 1   | eval didthey=if(count&lt;=0, "no", "yes") | search didthey=yes</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="wrap">undefined</option>
+        <option name="rowNumbers">undefined</option>
+        <option name="drilldown">row</option>
+        <drilldown>
+          <set token="dest_ip">$row.dest_ip$</set>
+          <set token="form.dest_ip">$row.dest_ip$</set>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>View which clients talked to $dest_ip$</title>
+      <table id="detail" depends="$dest_ip$">
+        <search>
+          <query>index=homemonitor dest_ip=$dest_ip$ | iplocation dest_ip | stats count(dest_ip) by src_ip, src_port, City</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">row</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

@@ -1,0 +1,52 @@
+<form>
+  <label>Detective Dashboard</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Time</label>
+      <default>
+        <earliest>-60m@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="destip">
+      <label>Host</label>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>External IP's Attempting Connections inbound</title>
+      <table>
+        <title>Drill Down on the IP into the Bad Guy Hunter Dashboard</title>
+        <search>
+          <query>index=homemonitor dest_ip=$destip$ |  iplocation dest_ip | stats count by dest_ip dest_port Country action2 | sort -count</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <option name="drilldown">cell</option>
+        <drilldown>
+          <link>/app/homemonitor/bad_guy?form.src_ip=$destip$</link>
+        </drilldown>
+      </table>
+    </panel>
+    <panel>
+      <title>Internal host communication</title>
+      <table>
+        <title>Displays other internal hosts that $destip$ talked to.</title>
+        <search>
+          <query>index=homemonitor dest_ip=$destip$ |  stats count(dest_ip) as count by src_ip, src_port</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">undefined</option>
+        <option name="rowNumbers">undefined</option>
+        <option name="drilldown">row</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

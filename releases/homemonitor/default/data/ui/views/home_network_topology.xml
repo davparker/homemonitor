@@ -1,0 +1,70 @@
+<form>
+  <label>Home Network Device List</label>
+  <description>Shows the Hostnames and IP's of your network</description>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="time" token="time" searchWhenChanged="true">
+      <label>Time</label>
+      <default>
+        <earliest>-4h@m</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="text" token="IP" searchWhenChanged="true">
+      <label>Host</label>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>Dynamic Hosts (DHCP)</title>
+      <table id="master">
+        <title>Drill down to view what connections the device is making</title>
+        <search>
+          <query>index=homemonitor DHCPACK nat_hostname!="" | dedup nat_hostname | stats sparkline  count,values(nat_hostname) AS Hostname by nat_ip, nat_mac | rename nat_ip AS IP sparkline AS frequency | table  Hostname IP frequency nat_mac</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="dataOverlayMode">highlow</option>
+        <option name="drilldown">row</option>
+        <drilldown>
+          <set token="IP">$row.IP$</set>
+          <set token="form.IP">$row.IP$</set>
+        </drilldown>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <title>Internal to External Connections</title>
+      <input type="multiselect" token="dest_port" searchWhenChanged="true">
+        <label>Focus on these Destination Ports (Defaults to all ports)</label>
+        <search>
+          <query>index=homemonitor src_ip=$IP$ | dedup dest_port | table dest_port</query>
+          <earliest>-60m@m</earliest>
+          <latest>now</latest>
+        </search>
+        <fieldForLabel>dest_port</fieldForLabel>
+        <fieldForValue>dest_port</fieldForValue>
+        <delimiter>,</delimiter>
+      </input>
+      <table id="detail">
+        <title>See where your internal connections are going</title>
+        <search>
+          <query>index=homemonitor src_ip=$IP$  | stats sparkline as frequency count,values(src_ip) as "Source IP" by dest_ip, dest_port, src_port | iplocation dest_ip | rename dest_ip as "Destination_IP", src_port as "Source Port", dest_port as "Destination Port" | where City !="" | table "Source IP" "Source Port" "Destination_IP" "Destination Port" City count frequency | sort -frequency</query>
+          <earliest>$time.earliest$</earliest>
+          <latest>$time.latest$</latest>
+        </search>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">false</option>
+        <option name="drilldown">row</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="count">10</option>
+        <drilldown>
+          <link>/app/homemonitor/detective_dashboard?form.destip=$row.Destination_IP$</link>
+        </drilldown>
+      </table>
+    </panel>
+  </row>
+</form>
