@@ -3,7 +3,7 @@ homemonitor
 
 Author: Kamilo Amir
 
-Version: 3.1.0
+Version: 3.2.1
 
 Home Monitor App for Splunk
 
@@ -32,6 +32,7 @@ What's new:
 
 3) New updated dashboards - I've gone through and vetted all the dashboards to make sure they make some logical sense.  I stopped using the 'process' field since it did not exist in all the routers syslog data.  Instead, I determined that outbound connections were iniated by src_ip = 192.168.* and inbound connections were iniated by NOT src_ip=192.168.* .
 
+4) New support for pfSense 2.2.1 - This will now support pfSense firewalls version 2.2.1 and beyond with the latest version of logging.  The older version of pfSense firewalls will no longer be supported.
 
 What might need to be done:
 
